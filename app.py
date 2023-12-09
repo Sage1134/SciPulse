@@ -1,13 +1,14 @@
-import kivy
-from kivy.app import App
-from kivy.uix.label import Label
+import kivymd
+from kivymd.app import MDApp
+from kivymd.uix.label import MDLabel
+from kivymd.uix.screen import Screen
 
-kivy.require('1.9.0')
 
-
-class MyApp(App):
+class MyApp(MDApp):
     def build(self):
-        label = Label(text="hello world", font_size='20sp')
+        screen = Screen()
+        label = MDLabel(text="hello world", halign='center',
+                        theme_text_color='Custom', text_color=(50/225.0, 104/255.0, 168/255.0, 1), font_style='H1')
         return label
 
 
