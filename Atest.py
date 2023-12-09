@@ -27,12 +27,11 @@ Screen:
     BoxLayout:
         orientation: 'vertical'
         MDTopAppBar:
-            title:'demo app'
+            title:'Science Wiz'
         MDLabel:
             text: 'hello world'
             halign: 'center'
 """
-
 class Signin(MDApp):
     def build(self):
         self.screen = Screen()
