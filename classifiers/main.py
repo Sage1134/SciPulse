@@ -16,27 +16,6 @@ Window.size = (300, 500)
 user = ''
 
 
-class BioScannerScreen(Screen):
-    def __init__(self, **kwargs):
-        super(BioScannerScreen, self).__init__(**kwargs)
-
-    def open_file_manager(self):
-        file_manager = MDFileManager(
-            exit_manager=self.exit_file_manager, select_path=self.select_path
-        )
-        file_manager.show('/')
-
-    def select_path(self, path):
-        print(f"Selected path: {path}")
-        source_path = path
-        destination_folder = "./tempAssets"
-        shutil.copy(source_path, destination_folder)
-
-    def exit_file_manager(self, *args):
-        # Close the file manager
-        App.changeToBio()
-
-
 layout_helper = '''
 Screen:
     BoxLayout:
@@ -85,20 +64,14 @@ Screen:
 """
 
 biologypage = '''
-BioScannerScreen:
+BoxLayout:
+    orientation: 'vertical'
+
+    MDTopAppBar:
+        title: 'Biology Scanner'
+
     BoxLayout:
         orientation: 'vertical'
-
-        MDTopAppBar:
-            title: 'Biology Scanner'
-
-        BoxLayout:
-            orientation: 'vertical'
-
-        MDFillRoundFlatButton:
-            text: "Upload Image"
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            on_release: root.open_file_manager()
 '''
 
 wizardPage = '''
@@ -125,7 +98,7 @@ class App(MDApp):
     def build(self):
         self.screen = Screen()
         self.theme_cls.primary_palette = "Green"
-        self.dialog = None  # Define 
+        self.dialog = None  # Define
         button = MDRectangleFlatButton(text='Login', pos_hint={
                                        'center_x': 0.5, 'center_y': 0.4}, on_release=self.loginCheck)
         self.username = Builder.load_string(username_helper)
@@ -174,17 +147,19 @@ class App(MDApp):
         self.screen.clear_widgets()
         wizard_screen = Builder.load_string(wizardPage)
         self.screen.add_widget(wizard_screen)
-        
+
         # Store the reference to the MDTextField in a variable
         self.text_input_field = wizard_screen.ids.textinput_field
-        
+
         answerButton = MDRectangleFlatButton(
             text='Enter', pos_hint={'center_x': 0.5, 'center_y': 0.4}, on_release=self.wizard
         )
         self.screen.add_widget(answerButton)
-        home_button = MDRectangleFlatButton(text='Home', pos=(50, 50), on_release=self.loginCheck)
+        home_button = MDRectangleFlatButton(
+            text='Home', pos=(50, 50), on_release=self.loginCheck)
         self.screen.add_widget(home_button)
-        biology_button = MDRectangleFlatButton(text='Bio Scanner', pos=(300, 50), on_release=self.changeToBio)
+        biology_button = MDRectangleFlatButton(
+            text='Bio Scanner', pos=(300, 50), on_release=self.changeToBio)
         self.screen.add_widget(biology_button)
 
     def close_dialog(self, obj):
@@ -192,7 +167,6 @@ class App(MDApp):
 
     def wizard(self, obj):
         print("Entered Question:", self.text_input_field.text)
-
 
 
 class MyApp(MDApp):
