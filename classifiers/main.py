@@ -66,6 +66,14 @@ Screen:
             md_bg_color: 6/225, 204/225, 110/225, 1
             title:'Homepage'
 
+        BoxLayout:
+            orientation: 'vertical'
+            Image:
+                source: 'biochemphy.png'  
+                size_hint_y: None
+                height: 300  
+
+
         MDLabel:
             id: welcome_label
             text_size: self.size
@@ -103,6 +111,13 @@ Screen:
 
         BoxLayout:
             orientation: 'vertical'
+
+    MDTextField: 
+        id: textinput_field
+        hint_text: "Enter Your Question"
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        size_hint_x: None
+        width: 300
 '''
 
 
@@ -110,7 +125,7 @@ class App(MDApp):
     def build(self):
         self.screen = Screen()
         self.theme_cls.primary_palette = "Green"
-        self.dialog = None  # Define the dialog attribute
+        self.dialog = None  # Define 
         button = MDRectangleFlatButton(text='Login', pos_hint={
                                        'center_x': 0.5, 'center_y': 0.4}, on_release=self.loginCheck)
         self.username = Builder.load_string(username_helper)
@@ -159,15 +174,25 @@ class App(MDApp):
         self.screen.clear_widgets()
         wizard_screen = Builder.load_string(wizardPage)
         self.screen.add_widget(wizard_screen)
-        home_button = MDRectangleFlatButton(text='Home', pos=(
-            50, 50), on_release=self.loginCheck)
+        
+        # Store the reference to the MDTextField in a variable
+        self.text_input_field = wizard_screen.ids.textinput_field
+        
+        answerButton = MDRectangleFlatButton(
+            text='Enter', pos_hint={'center_x': 0.5, 'center_y': 0.4}, on_release=self.wizard
+        )
+        self.screen.add_widget(answerButton)
+        home_button = MDRectangleFlatButton(text='Home', pos=(50, 50), on_release=self.loginCheck)
         self.screen.add_widget(home_button)
-        biology_button = MDRectangleFlatButton(text='Bio Scanner', pos=(
-            300, 50), on_release=self.changeToBio)
+        biology_button = MDRectangleFlatButton(text='Bio Scanner', pos=(300, 50), on_release=self.changeToBio)
         self.screen.add_widget(biology_button)
 
     def close_dialog(self, obj):
         self.dialog.dismiss()
+
+    def wizard(self, obj):
+        print("Entered Question:", self.text_input_field.text)
+
 
 
 class MyApp(MDApp):
