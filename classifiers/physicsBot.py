@@ -18,5 +18,4 @@ def getResponse(prompt):
     )
 
     response = response.choices[0].message.content.strip()
-    file_object  = open("tempAssets/response.txt", "w")
-    file_object.write(response)
+    return response
