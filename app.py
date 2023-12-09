@@ -14,8 +14,12 @@ layout_helper = '''
 Screen:
     BoxLayout:
         orientation: 'vertical'
+
         MDTopAppBar:
             title: 'Science Wiz'
+
+        BoxLayout:
+            orientation: 'vertical'
 '''
 
 username_helper = """
@@ -45,6 +49,18 @@ Screen:
             font_style: 'H6'
 """
 
+biologypage = '''
+Screen:
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            title: 'Biology Scanner'
+
+        BoxLayout:
+            orientation: 'vertical'
+'''
+
 
 class App(MDApp):
     def build(self):
@@ -71,12 +87,23 @@ class App(MDApp):
                                    )
             self.dialog.open()
         else:
-            self.screen.clear_widgets()
-            second_screen = Builder.load_string(homepage)
-            self.screen.add_widget(second_screen)
-            biology_button = MDRectangleFlatButton(text='Biology', pos=(
-                50, 50))
-            self.screen.add_widget(biology_button)
+            self.changeToHome(obj)
+
+    def changeToHome(self, obj):
+        self.screen.clear_widgets()
+        home_screen = Builder.load_string(homepage)
+        self.screen.add_widget(home_screen)
+        biology_button = MDRectangleFlatButton(text='Biology', pos=(
+            50, 50), on_release=self.changeToBio)
+        self.screen.add_widget(biology_button)
+
+    def changeToBio(self, obj):
+        self.screen.clear_widgets()
+        bio_screen = Builder.load_string(biologypage)
+        self.screen.add_widget(bio_screen)
+        home_button = MDRectangleFlatButton(text='Home', pos=(
+            50, 50), on_release=self.loginCheck)
+        self.screen.add_widget(home_button)
 
     def close_dialog(self, obj):
         self.dialog.dismiss()
