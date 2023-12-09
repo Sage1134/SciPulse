@@ -1,4 +1,5 @@
 import shutil
+import os
 from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivymd.uix.screen import Screen
@@ -7,16 +8,19 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 from kivy.core.window import Window
 from kivymd.uix.filemanager import MDFileManager
+<<<<<<< HEAD
 from kivymd.theming import ThemeManager
 from physicsBot import getResponse
 import requests
 
+=======
+from kivy.uix.widget import Widget
+>>>>>>> e752eb8dfc28ee4c8eef210b2e7f2cefecbde599
 
+from bioClassifier import predict
 
 
 Window.size = (300, 500)
-
-user = ''
 
 
 layout_helper = '''
@@ -73,8 +77,21 @@ BoxLayout:
     MDTopAppBar:
         title: 'Biology Scanner'
 
-    BoxLayout:
+    FloatLayout:
         orientation: 'vertical'
+        MDRectangleFlatButton:
+            text: 'Select File'
+            pos: (400, 775)
+            on_release: app.select_file()
+        
+    MDLabel:
+        text: "Please Select a File to Classify"
+        text_size: self.size
+        halign: 'center'
+        valign: 'top'
+        theme_text_color: "Custom"
+        text_color: 50/225.0, 104/255.0, 168/255.0, 1
+        font_style: 'H6'
 '''
 
 wizardPage = '''
@@ -102,6 +119,11 @@ class App(MDApp):
         self.theme_cls = ThemeManager()
         self.theme_cls.theme_style = "Dark"  # Use "Light" for a light theme
         self.screen = Screen()
+<<<<<<< HEAD
+=======
+
+        self.theme_cls.primary_palette = "Green"
+>>>>>>> e752eb8dfc28ee4c8eef210b2e7f2cefecbde599
         self.dialog = None  # Define
         button = MDRectangleFlatButton(text='Login', pos_hint={
                                        'center_x': 0.5, 'center_y': 0.4}, on_release=self.loginCheck)
@@ -110,6 +132,7 @@ class App(MDApp):
         self.screen.add_widget(self.username)
         self.screen.add_widget(layout)
         self.screen.add_widget(button)
+        self.file_manager = None  # initialize the file manager
         return self.screen
 
     def loginCheck(self, obj):
@@ -148,6 +171,35 @@ class App(MDApp):
             300, 50), on_release=self.changeToWizard)
         self.screen.add_widget(wiz_button)
 
+    def select_file(self):
+        self.file_manager = MDFileManager(
+            exit_manager=self.exit_file_manager, select_path=self.selected_file
+        )
+        self.file_manager.show('/')  # You can specify the starting directory
+
+    def exit_file_manager(self, *args):
+        self.file_manager.close()
+
+    def selected_file(self, path):
+        print(f'Selected file: {path}')
+        fileToCopy = path
+        destination = './tempAssets'
+        shutil.copy(fileToCopy, destination)
+
+        file_name = os.path.basename(path)
+
+        output = predict(file_name)
+        print(output)
+        self.dialog = MDDialog(title='Information',
+                               text=output,
+                               size_hint=(0.8, 1),
+                               buttons=[MDFlatButton(
+                                   text='Close', on_release=self.close_dialog)]
+                               )
+        self.dialog.open()
+
+        self.exit_file_manager()
+
     def changeToWizard(self, obj):
         self.screen.clear_widgets()
         wizard_screen = Builder.load_string(wizardPage)
@@ -170,6 +222,7 @@ class App(MDApp):
         self.dialog.dismiss()
 
     def wizard(self, obj):
+<<<<<<< HEAD
         response = getResponse(self.text_input_field.text)
         self.dialog = MDDialog(title='Science Wizard',
                                    text=response,
@@ -179,6 +232,9 @@ class App(MDApp):
                                    )
         self.dialog.open()
     
+=======
+        print(self.text_input_field.text)
+>>>>>>> e752eb8dfc28ee4c8eef210b2e7f2cefecbde599
 
 
 class MyApp(MDApp):
