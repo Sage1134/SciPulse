@@ -8,17 +8,21 @@ Window.size = (300, 500)
 
 screen_helper = """
 Screen:
-    FloatLayout:
+    BoxLayout:
         orientation: 'vertical'
         MDTopAppBar:
+            md_bg_color: 6/225, 204/225, 110/225, 1
             title:'Biology Scanner'
-            pos_hint: {'top': 1}
+
         MDLabel:
+            id: diagnostic
+            text_size: self.size
+            halign: 'left'
+            valign: 'top'
             text: 'Welcome (user)'
-            pos: (25, 325)
             theme_text_color: "Custom"
             text_color: 50/225.0, 104/255.0, 168/255.0, 1
-            font_style: 'Subtitle1'
+            font_style: 'H6'
 """
 
 
