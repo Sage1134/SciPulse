@@ -7,6 +7,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 from kivy.core.window import Window
 from kivymd.uix.filemanager import MDFileManager
+from physicsBot import getResponse
 
 
 
@@ -190,7 +191,8 @@ class App(MDApp):
         self.dialog.dismiss()
 
     def wizard(self, obj):
-        print(self.text_input_field.text)
+        response = getResponse("self.text_input_field.text")
+        print(response)
 
 
 
