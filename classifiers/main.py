@@ -7,7 +7,10 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 from kivy.core.window import Window
 from kivymd.uix.filemanager import MDFileManager
+from kivymd.theming import ThemeManager
 from physicsBot import getResponse
+import requests
+
 
 
 
@@ -96,8 +99,9 @@ Screen:
 
 class App(MDApp):
     def build(self):
+        self.theme_cls = ThemeManager()
+        self.theme_cls.theme_style = "Dark"  # Use "Light" for a light theme
         self.screen = Screen()
-        self.theme_cls.primary_palette = "Green"
         self.dialog = None  # Define
         button = MDRectangleFlatButton(text='Login', pos_hint={
                                        'center_x': 0.5, 'center_y': 0.4}, on_release=self.loginCheck)
@@ -131,6 +135,7 @@ class App(MDApp):
         wiz_button = MDRectangleFlatButton(text='Science Wizard', pos=(
             300, 50), on_release=self.changeToWizard)
         self.screen.add_widget(wiz_button)
+        
 
     def changeToBio(self, obj):
         self.screen.clear_widgets()
@@ -148,7 +153,6 @@ class App(MDApp):
         wizard_screen = Builder.load_string(wizardPage)
         self.screen.add_widget(wizard_screen)
 
-        # Store the reference to the MDTextField in a variable
         self.text_input_field = wizard_screen.ids.textinput_field
 
         answerButton = MDRectangleFlatButton(
@@ -174,6 +178,7 @@ class App(MDApp):
                                        text='Close', on_release=self.close_dialog)]
                                    )
         self.dialog.open()
+    
 
 
 class MyApp(MDApp):

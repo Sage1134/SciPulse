@@ -13,7 +13,7 @@ def getResponse(prompt):
     response = openai.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": prompt + " but as short as possible for your answer."}
+            {"role": "system", "content": prompt + " keep response as short as possible"}
         ]
     )
 
