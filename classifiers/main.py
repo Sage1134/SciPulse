@@ -166,7 +166,7 @@ class App(MDApp):
         self.dialog.dismiss()
 
     def wizard(self, obj):
-        response = getResponse("self.text_input_field.text")
+        response = getResponse(self.text_input_field.text)
         print(response)
 
 
