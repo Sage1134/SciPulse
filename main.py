@@ -7,6 +7,7 @@ APIKEY = os.getenv("APIKEY")
 
 openai.api_key = APIKEY
 
+
 def therapist(prompt):
     response = openai.chat.completions.create(
         model="gpt-3.5-turbo",
