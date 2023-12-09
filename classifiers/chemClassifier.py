@@ -26,7 +26,9 @@ def getResponse(topic):
         ]
     )
 
-    return response.choices[0].message.content.strip()
+    response = response.choices[0].message.content.strip()
+    file_object  = open("tempAssets/response.txt", "w")
+    file_object.write(response)
 
 def predict(imageFile):
     # Read image
@@ -44,9 +46,5 @@ def predict(imageFile):
     predictedClassIndex = np.argmax(prediction)
     predictedClass = classLabels[predictedClassIndex]
 
-    # Return value
-    return getResponse(predictedClass)
-
-# print(predict("good.jpg"))
-# print(predict("over.jpg"))
-# print(predict("under.jpg"))
+    # Feed prediction into API
+    getResponse(predictedClass)
