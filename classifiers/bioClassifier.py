@@ -5,21 +5,21 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
-classLabels = ["peter lee", "cheetah", "parrot"]
+classLabels = ["human", "cheetah", "parrot"]
 
 # Load the model
 model = tf.keras.models.load_model("classifiers/BioModel")
 
-load_dotenv()
-APIKEY = os.getenv("APIKEY")
+load_dotenv("Vars.env")
+key = os.getenv("APIKEY")
 
-openai.api_key = APIKEY
+openai.api_key = key
 
 def getResponse(topic):
     response = openai.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "physical facts about " + topic + ", shortest possible answer while maximizing the information, max 500 chars"}
+            {"role": "system", "content": "physical facts about a " + topic + ", shortest possible answer while maximizing the information, max 500 chars"}
         ]
     )
 
@@ -39,7 +39,7 @@ def predict(imageFile):
     input_image = np.expand_dims(resize / 255.0, axis=0)
 
     # Make the prediction
-    prediction = model.predict(input_image)
+    prediction = model.predict(input_image, verbose=0)
 
     # Get the index of the maximum probability
     predictedClassIndex = np.argmax(prediction)
@@ -48,3 +48,5 @@ def predict(imageFile):
     predictedClass = classLabels[predictedClassIndex]
 
     return getResponse(predictedClass)
+
+print(predict("test.jpg"))
