@@ -25,9 +25,9 @@ def getResponse(topic):
 
     return response.choices[0].message.content.strip()
 
-def predict(imagePath):
+def predict(imageFile):
     # Load the image
-    im = cv2.imread("imagePath")
+    im = cv2.imread(os.path.join("tempAssets", imageFile))
 
     # Decode the image using TensorFlow
     image = tf.image.decode_image(tf.io.encode_jpeg(im).numpy(), channels=3)
