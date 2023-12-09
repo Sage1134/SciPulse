@@ -32,6 +32,10 @@ class BioScannerScreen(Screen):
         destination_folder = "./tempAssets"
         shutil.copy(source_path, destination_folder)
 
+    def exit_file_manager(self, *args):
+        # Close the file manager
+        App.changeToBio()
+
 
 layout_helper = '''
 Screen:
