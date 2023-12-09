@@ -19,7 +19,7 @@ import chemClassifier
 # window size
 Window.size = (300, 500)
 
-
+# main page
 layout_helper = '''
 Screen:
     BoxLayout:
@@ -31,7 +31,7 @@ Screen:
         BoxLayout:
             orientation: 'vertical'
 '''
-
+# username page
 username_helper = """
 MDTextField: 
     id: username_field
@@ -40,7 +40,7 @@ MDTextField:
     size_hint_x: None
     width: 300
 """
-
+# homepage
 homepage = """
 Screen:
     BoxLayout:
@@ -66,7 +66,7 @@ Screen:
             text_color: 50/225.0, 104/255.0, 168/255.0, 1
             font_style: 'H6'
 """
-
+# bio page
 biologypage = '''
 BoxLayout:
     orientation: 'vertical'
@@ -90,7 +90,7 @@ BoxLayout:
         text_color: 50/225.0, 104/255.0, 168/255.0, 1
         font_style: 'H6'
 '''
-
+# chem page
 chemistryPage = '''
 BoxLayout:
     orientation: 'vertical'
@@ -115,6 +115,7 @@ BoxLayout:
         font_style: 'H6'
 '''
 
+# wizard page
 wizardPage = '''
 Screen:
     BoxLayout:
