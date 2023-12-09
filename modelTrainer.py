@@ -1,3 +1,4 @@
+# Import libraries
 import tensorflow as tf
 import os
 import keras
@@ -6,7 +7,8 @@ import os
 import cv2
 import imghdr
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = "2" 
+# Suppress warnings
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = "2"
 
 gpus = tf.config.experimental.list_physical_devices("GPU")
 for gpu in gpus:
