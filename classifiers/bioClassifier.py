@@ -1,3 +1,4 @@
+# Import libraries
 import openai
 from dotenv import load_dotenv
 import os
@@ -5,16 +6,18 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
+# Define class labels
 classLabels = ["human", "cheetah", "parrot"]
 
-# Load the model
-model = tf.keras.models.load_model("classifiers/BioModel")
+# Load trained model
+model = tf.keras.models.load_model("classifiers/bioModel")
 
+# Define API key
 load_dotenv("Vars.env")
 key = os.getenv("APIKEY")
-
 openai.api_key = key
 
+# Get response from API
 def getResponse(topic):
     response = openai.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -26,25 +29,24 @@ def getResponse(topic):
     return response.choices[0].message.content.strip()
 
 def predict(imageFile):
-    # Load the image
+    # Read image
     im = cv2.imread(os.path.join("tempAssets", imageFile))
 
-    # Decode the image using TensorFlow
+    # Shape image
     image = tf.image.decode_image(tf.io.encode_jpeg(im).numpy(), channels=3)
-
-    # Resize the image
     resize = tf.image.resize(image, (256, 256))
-
-    # Preprocess the image for prediction
+    
+    # Normalize image
     input_image = np.expand_dims(resize / 255.0, axis=0)
 
-    # Make the prediction
+    # Make prediction
     prediction = model.predict(input_image, verbose=0)
-
-    # Get the index of the maximum probability
     predictedClassIndex = np.argmax(prediction)
-
-    # Map the index back to the class label
+    print(prediction)
     predictedClass = classLabels[predictedClassIndex]
 
+    # Return value
     return getResponse(predictedClass)
+
+# print(predict("cheetah.jpg"))
+# print(predict("parrot.jpg"))
