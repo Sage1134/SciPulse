@@ -11,11 +11,6 @@ gpus = tf.config.experimental.list_physical_devices("GPU")
 for gpu in gpus:
   tf.config.experimental.set_memory_growth(gpu, True)
 
-import os
-import imghdr
-import cv2
-import tensorflow as tf
-
 dataDir = "Data"
 imageExts = ["jpeg", "jpg", "bmp", "png"]
 counter = 0
@@ -45,7 +40,7 @@ val = data.skip(train_size).take(val_size)
 test = data.skip(train_size + val_size).take(test_size)
 
 # Augment the training set
-train_augmented = train.map(lambda x, y: (train_data_augmentation(x, training=True), y))
+train.map(lambda x, y: (train_data_augmentation(x, training=True), y))
 
 # For validation and testing, use the original data (without augmentation)
 val = val.map(lambda x, y: (x, y))
