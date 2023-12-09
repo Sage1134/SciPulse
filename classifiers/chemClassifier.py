@@ -48,7 +48,3 @@ def predict(imageFile):
 
     # Feed prediction into API
     getResponse(predictedClass)
-
-# predict("good.jpg")
-# predict("over.jpg")
-# predict("under.jpg")

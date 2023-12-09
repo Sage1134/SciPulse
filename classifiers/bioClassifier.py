@@ -49,6 +49,3 @@ def predict(imageFile):
 
     # Feed prediction into API
     getResponse(predictedClass)
-
-# predict("cheetah.jpg")
-# predict("parrot.jpg")
