@@ -25,11 +25,9 @@ def getResponse(topic):
             {"role": "system", "content": "physical facts about a " + topic + ", shortest possible answer while maximizing the information, max 500 chars"}
         ]
     )
-
-    response = response.choices[0].message.content.strip()
     
-    file_object  = open("tempAssets/response.txt", "w")
-    file_object.write(response)
+    response = response.choices[0].message.content.strip()
+    return response
 
 def predict(imageFile):
     # Read image
@@ -48,4 +46,4 @@ def predict(imageFile):
     predictedClass = classLabels[predictedClassIndex]
 
     # Feed prediction into API
-    getResponse(predictedClass)
+    return getResponse(predictedClass)

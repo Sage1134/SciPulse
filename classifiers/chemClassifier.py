@@ -27,8 +27,7 @@ def getResponse(topic):
     )
 
     response = response.choices[0].message.content.strip()
-    file_object  = open("tempAssets/response.txt", "w")
-    file_object.write(response)
+    return response
 
 def predict(imageFile):
     # Read image
@@ -47,4 +46,4 @@ def predict(imageFile):
     predictedClass = classLabels[predictedClassIndex]
 
     # Feed prediction into API
-    getResponse(predictedClass)
+    return getResponse(predictedClass)
