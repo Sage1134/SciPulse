@@ -1,14 +1,13 @@
 import kivy
 from kivy.app import App
-from kivy.uix.label import MDLabel
+from kivy.uix.label import Label
 
 kivy.require('1.9.0')
 
 
 class MyApp(App):
     def build(self):
-        label = MDLabel(text="hello world", halign='center',
-                        theme_Text_Color='custom', text_color=(0, 0, 1, 1))
+        label = Label(text="hello world", font_size='20sp')
         return label
 
 
