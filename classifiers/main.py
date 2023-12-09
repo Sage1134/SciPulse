@@ -13,8 +13,8 @@ from physicsBot import getResponse
 import requests
 
 
-from bioClassifier import predict
-
+import bioClassifier
+import chemClassifier
 
 Window.size = (300, 500)
 
@@ -90,6 +90,30 @@ BoxLayout:
         font_style: 'H6'
 '''
 
+chemistryPage = '''
+BoxLayout:
+    orientation: 'vertical'
+
+    MDTopAppBar:
+        title: 'Titration Scanner'
+
+    FloatLayout:
+        orientation: 'vertical'
+        MDRectangleFlatButton:
+            text: 'Select File'
+            pos: (400, 775)
+            on_release: app.select_file()
+        
+    MDLabel:
+        text: "Please Select a File to Classify"
+        text_size: self.size
+        halign: 'center'
+        valign: 'top'
+        theme_text_color: "Custom"
+        text_color: 50/225.0, 104/255.0, 168/255.0, 1
+        font_style: 'H6'
+'''
+
 wizardPage = '''
 Screen:
     BoxLayout:
@@ -140,6 +164,7 @@ class App(MDApp):
             self.changeToHome(obj)
 
     def changeToHome(self, obj):
+        self.current_page = "Home"
         self.screen.clear_widgets()
         home_screen = Builder.load_string(homepage)
         self.screen.add_widget(home_screen)
@@ -149,8 +174,12 @@ class App(MDApp):
         wiz_button = MDRectangleFlatButton(text='Science Wizard', pos=(
             300, 50), on_release=self.changeToWizard)
         self.screen.add_widget(wiz_button)
+        chem_button = MDRectangleFlatButton(text='Chem Scanner', pos=(
+            300, 150), on_release=self.changeToChem)
+        self.screen.add_widget(chem_button)
 
     def changeToBio(self, obj):
+        self.current_page = "Biology"
         self.screen.clear_widgets()
         bio_screen = Builder.load_string(biologypage)
         self.screen.add_widget(bio_screen)
@@ -160,6 +189,24 @@ class App(MDApp):
         wiz_button = MDRectangleFlatButton(text='Science Wizard', pos=(
             300, 50), on_release=self.changeToWizard)
         self.screen.add_widget(wiz_button)
+        chem_button = MDRectangleFlatButton(text='Chem Scanner', pos=(
+            300, 150), on_release=self.changeToChem)
+        self.screen.add_widget(chem_button)
+
+    def changeToChem(self, obj):
+        self.current_page = "Chemistry"
+        self.screen.clear_widgets()
+        chem_screen = Builder.load_string(chemistryPage)
+        self.screen.add_widget(chem_screen)
+        home_button = MDRectangleFlatButton(text='Home', pos=(
+            50, 50), on_release=self.loginCheck)
+        self.screen.add_widget(home_button)
+        wiz_button = MDRectangleFlatButton(text='Science Wizard', pos=(
+            300, 50), on_release=self.changeToWizard)
+        self.screen.add_widget(wiz_button)
+        biology_button = MDRectangleFlatButton(text='Bio Scanner', pos=(
+            300, 150), on_release=self.changeToBio)
+        self.screen.add_widget(biology_button)
 
     def select_file(self):
         self.file_manager = MDFileManager(
@@ -178,7 +225,14 @@ class App(MDApp):
 
         file_name = os.path.basename(path)
 
-        output = predict(file_name)
+        # checks the page
+        if self.current_page == "Biology":
+            output = bioClassifier.predict(file_name)
+        elif self.current_page == "Chemistry":
+            output = chemClassifier.predict(file_name)
+        else:
+            output = "Invalid screen"
+
         print(output)
         self.dialog = MDDialog(title='Information',
                                text=output,
@@ -207,6 +261,9 @@ class App(MDApp):
         biology_button = MDRectangleFlatButton(
             text='Bio Scanner', pos=(300, 50), on_release=self.changeToBio)
         self.screen.add_widget(biology_button)
+        chem_button = MDRectangleFlatButton(text='Chem Scanner', pos=(
+            300, 150), on_release=self.changeToChem)
+        self.screen.add_widget(chem_button)
 
     def close_dialog(self, obj):
         self.dialog.dismiss()
