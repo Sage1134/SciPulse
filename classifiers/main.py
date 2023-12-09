@@ -1,3 +1,4 @@
+import shutil
 from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivymd.uix.screen import Screen
@@ -5,10 +6,32 @@ from kivymd.uix.button import MDRectangleFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 from kivy.core.window import Window
+from plyer import filechooser
+from kivymd.uix.filemanager import MDFileManager
+
+from bioClassifier import predict
 
 Window.size = (300, 500)
 
 user = ''
+
+
+class BioScannerScreen(Screen):
+    def __init__(self, **kwargs):
+        super(BioScannerScreen, self).__init__(**kwargs)
+
+    def open_file_manager(self):
+        file_manager = MDFileManager(
+            exit_manager=self.exit_file_manager, select_path=self.select_path
+        )
+        file_manager.show('/')
+
+    def select_path(self, path):
+        print(f"Selected path: {path}")
+        source_path = path
+        destination_folder = "./tempAssets"
+        shutil.copy(source_path, destination_folder)
+
 
 layout_helper = '''
 Screen:
@@ -50,7 +73,7 @@ Screen:
 """
 
 biologypage = '''
-Screen:
+BioScannerScreen:
     BoxLayout:
         orientation: 'vertical'
 
@@ -59,6 +82,11 @@ Screen:
 
         BoxLayout:
             orientation: 'vertical'
+
+        MDFillRoundFlatButton:
+            text: "Upload Image"
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            on_release: root.open_file_manager()
 '''
 
 wizardPage = '''
@@ -143,4 +171,5 @@ class MyApp(MDApp):
         return App()
 
 
-App().run()
+if __name__ == "__main__":
+    App().run()
