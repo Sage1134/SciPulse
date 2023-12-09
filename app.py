@@ -61,6 +61,18 @@ Screen:
             orientation: 'vertical'
 '''
 
+wizardPage = '''
+Screen:
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            title: 'Science Wizard'
+
+        BoxLayout:
+            orientation: 'vertical'
+'''
+
 
 class App(MDApp):
     def build(self):
@@ -93,9 +105,12 @@ class App(MDApp):
         self.screen.clear_widgets()
         home_screen = Builder.load_string(homepage)
         self.screen.add_widget(home_screen)
-        biology_button = MDRectangleFlatButton(text='Biology', pos=(
+        biology_button = MDRectangleFlatButton(text='Bio Scanner', pos=(
             50, 50), on_release=self.changeToBio)
         self.screen.add_widget(biology_button)
+        wiz_button = MDRectangleFlatButton(text='Science Wizard', pos=(
+            300, 50), on_release=self.changeToWizard)
+        self.screen.add_widget(wiz_button)
 
     def changeToBio(self, obj):
         self.screen.clear_widgets()
@@ -104,6 +119,20 @@ class App(MDApp):
         home_button = MDRectangleFlatButton(text='Home', pos=(
             50, 50), on_release=self.loginCheck)
         self.screen.add_widget(home_button)
+        wiz_button = MDRectangleFlatButton(text='Science Wizard', pos=(
+            300, 50), on_release=self.changeToWizard)
+        self.screen.add_widget(wiz_button)
+
+    def changeToWizard(self, obj):
+        self.screen.clear_widgets()
+        wizard_screen = Builder.load_string(wizardPage)
+        self.screen.add_widget(wizard_screen)
+        home_button = MDRectangleFlatButton(text='Home', pos=(
+            50, 50), on_release=self.loginCheck)
+        self.screen.add_widget(home_button)
+        biology_button = MDRectangleFlatButton(text='Bio Scanner', pos=(
+            300, 50), on_release=self.changeToBio)
+        self.screen.add_widget(biology_button)
 
     def close_dialog(self, obj):
         self.dialog.dismiss()
