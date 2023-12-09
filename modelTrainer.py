@@ -1,11 +1,12 @@
 import tensorflow as tf
 import os
-import cv2
-import imghdr
-import numpy as np
 import keras
 from keras import layers
 import os
+import cv2
+import imghdr
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = "2" 
 
 gpus = tf.config.experimental.list_physical_devices("GPU")
 for gpu in gpus:
@@ -21,15 +22,6 @@ data = tf.keras.utils.image_dataset_from_directory("Data", label_mode="categoric
 # Normalize Data
 data = data.map(lambda x, y: (x / 255, y))
 
-# Training Data Augmentation
-train_data_augmentation = tf.keras.Sequential([
-    tf.keras.layers.experimental.preprocessing.Rescaling(1./255),
-    tf.keras.layers.experimental.preprocessing.RandomRotation(20),
-    tf.keras.layers.experimental.preprocessing.RandomTranslation(0.2, 0.2),
-    tf.keras.layers.experimental.preprocessing.RandomZoom(0.2),
-    tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal"),
-])
-
 # Apply data augmentation to the training set
 train_size = int(len(data) * 0.7)
 val_size = int(len(data) * 0.2)
@@ -39,19 +31,11 @@ train = data.take(train_size)
 val = data.skip(train_size).take(val_size)
 test = data.skip(train_size + val_size).take(test_size)
 
-# Augment the training set
-train.map(lambda x, y: (train_data_augmentation(x, training=True), y))
-
-# For validation and testing, use the original data (without augmentation)
-val = val.map(lambda x, y: (x, y))
-test = test.map(lambda x, y: (x, y))
-
 # Create a list of images to remove
 images_to_remove = []
 
 for imageClass in os.listdir(dataDir):
     for image in os.listdir(os.path.join(dataDir, imageClass)):
-        counter += 1
         print(counter)
         imagePath = os.path.join(dataDir, imageClass, image)
         try:
@@ -65,7 +49,7 @@ for imageClass in os.listdir(dataDir):
 # Remove images
 for image_path in images_to_remove:
     os.remove(image_path)
-    
+
 # Create model
 num_classes = len(os.listdir(dataDir))
 
@@ -79,28 +63,22 @@ model.add(layers.Conv2D(32, (3, 3), 1, activation='relu'))
 model.add(layers.MaxPooling2D())
 model.add(layers.Conv2D(16, (3, 3), 1, activation='relu'))
 model.add(layers.MaxPooling2D())
-model.add(layers.BatchNormalization())
 
-model.add(layers.Conv2D(32, (3, 3), 1, activation='relu'))
-model.add(layers.MaxPooling2D())
-model.add(layers.Conv2D(64, (3, 3), 1, activation='relu'))
-model.add(layers.MaxPooling2D())
-model.add(layers.Conv2D(128, (3, 3), 1, activation='relu'))
-model.add(layers.Dropout(0.5))
-model.add(layers.MaxPooling2D())
 # Flatten the output
 model.add(layers.Flatten())
 
 # Dense layers
-model.add(layers.Dense(4096, activation='relu'))
+model.add(layers.Dense(256, activation='relu'))
 model.add(layers.Dense(num_classes, activation='softmax'))
 
-# Compile the model
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+# Compile the model with a specified learning rate
+optimizer = keras.optimizers.Adam(learning_rate=0.001)
+model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
+
 # Display the model summary
 model.summary()
 
-
+# Training with early stopping
 early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 model.fit(train, epochs=32, validation_data=val, callbacks=[early_stopping])
 
@@ -108,3 +86,4 @@ model.fit(train, epochs=32, validation_data=val, callbacks=[early_stopping])
 test_loss, test_accuracy = model.evaluate(test)
 print(f'Test Accuracy: {test_accuracy * 100:.2f}%')
 
+model.save("BioModel")
