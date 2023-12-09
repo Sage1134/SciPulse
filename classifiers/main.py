@@ -167,7 +167,13 @@ class App(MDApp):
 
     def wizard(self, obj):
         response = getResponse(self.text_input_field.text)
-        print(response)
+        self.dialog = MDDialog(title='Science Wizard',
+                                   text=response,
+                                   size_hint=(0.8, 1),
+                                   buttons=[MDFlatButton(
+                                       text='Close', on_release=self.close_dialog)]
+                                   )
+        self.dialog.open()
 
 
 class MyApp(MDApp):
