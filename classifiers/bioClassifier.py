@@ -48,5 +48,3 @@ def predict(imageFile):
     predictedClass = classLabels[predictedClassIndex]
 
     return getResponse(predictedClass)
-
-print(predict("test.jpg"))
