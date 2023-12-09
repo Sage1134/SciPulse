@@ -6,10 +6,9 @@ from kivymd.uix.button import MDRectangleFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 from kivy.core.window import Window
-from plyer import filechooser
 from kivymd.uix.filemanager import MDFileManager
 
-from bioClassifier import predict
+
 
 Window.size = (300, 500)
 
@@ -166,7 +165,7 @@ class App(MDApp):
         self.dialog.dismiss()
 
     def wizard(self, obj):
-        print("Entered Question:", self.text_input_field.text)
+        print(self.text_input_field.text)
 
 
 class MyApp(MDApp):
