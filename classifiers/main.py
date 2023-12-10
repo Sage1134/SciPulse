@@ -19,7 +19,7 @@ import chemClassifier
 # window size
 Window.size = (300, 500)
 
-# main page
+# First Page
 layout_helper = '''
 Screen:
     BoxLayout:
@@ -54,13 +54,14 @@ Screen:
             Image:
                 source: 'biochemphy.png'  
                 size_hint_y: None
-                height: 300  
+                height: 300 
 
 
         MDLabel:
             id: welcome_label
+            text: "Welcome"
             text_size: self.size
-            halign: 'left'
+            halign: 'center'
             valign: 'top'
             theme_text_color: "Custom"
             text_color: 50/225.0, 104/255.0, 168/255.0, 1
